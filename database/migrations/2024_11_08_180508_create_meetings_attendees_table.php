@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attendances', function (Blueprint $table) {
+        Schema::create('attendee_meeting', function (Blueprint $table) {
             $table->id();
-            $table->integer("user_id")->references('id')->on('users');
+            $table->integer("attendee_id")->references('id')->on('attendee');
             $table->integer("meeting_id")->references('id')->on('meetings');
-            $table->timestamps();
         });
     }
 
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendances');
+        Schema::dropIfExists('attendee_meeting');
     }
 };

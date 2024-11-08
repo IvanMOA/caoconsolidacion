@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AttendeesResource\Pages;
 use App\Filament\Resources\AttendeesResource\RelationManagers;
-use App\Models\Attendees;
+use App\Models\Attendee;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AttendeesResource extends Resource
 {
-    protected static ?string $model = Attendees::class;
+    protected static ?string $model = Attendee::class;
 
     protected static ?string $modelLabel = 'congredado';
 
@@ -59,7 +59,7 @@ class AttendeesResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\MeetingsRelationManager::class
         ];
     }
 

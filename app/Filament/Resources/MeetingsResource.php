@@ -4,10 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\MeetingsResource\Pages;
 use App\Filament\Resources\MeetingsResource\RelationManagers;
-use App\Models\Meetings;
+use App\Models\Meeting;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MeetingsResource extends Resource
 {
-    protected static ?string $model = Meetings::class;
+    protected static ?string $model = Meeting::class;
 
     protected static ?string $modelLabel = 'reunión';
 
@@ -32,7 +33,15 @@ class MeetingsResource extends Resource
                     ->label("Nombre"),
                 Forms\Components\TimePicker::make('starts_at')
                     ->label("Fecha de inicio")
-                    ->default(now())
+                    ->default(now()),
+                Forms\Components\Repeater::make('attendees')
+                    ->relationship()
+                    ->addActionAlignment(Alignment::Start)
+                    ->schema([
+                        Forms\Components\Select::make('attendee_id')
+                            ->relationship('attendee', 'name')
+                            ->required(),
+                    ])
             ]);
     }
 
