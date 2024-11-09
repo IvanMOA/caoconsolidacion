@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MeetingsResource extends Resource
 {
+    protected static ?int $navigationSort = 1;
+
     protected static ?string $model = Meeting::class;
 
     protected static ?string $modelLabel = 'reunión';
@@ -53,7 +55,9 @@ class MeetingsResource extends Resource
                 Columns\TextColumn::make('starts_at')
                     ->dateTime()
                     ->label("Fecha de inicio"),
-                Columns\TextColumn::make('attendees_count')->counts('attendees')
+                Columns\TextColumn::make('attendees_count')
+                    ->label("Total asistencias")
+                    ->counts('attendees')
             ])
             ->filters([
                 //
