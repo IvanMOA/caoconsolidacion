@@ -13,4 +13,9 @@ class Attendee extends Model
     {
         return $this->belongsToMany(Meeting::class);
     }
+
+    public function tools(): BelongsToMany
+    {
+        return $this->belongsToMany(Tool::class);
+    }
 }

@@ -40,7 +40,6 @@ class NewAttendeesResource extends Resource
                     ->extraAttributes(['class' => 'max-w-lg'])
                     ->compact()
                     ->schema([
-                        // ...
                         Forms\Components\TextInput::make('name')
                             ->label("Nombre"),
                         Forms\Components\TextInput::make('who_invited_me')

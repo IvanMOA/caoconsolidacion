@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AttendeesResource\Pages;
 use App\Filament\Resources\AttendeesResource\RelationManagers;
 use App\Models\Attendee;
+use App\Models\Tool;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -32,7 +33,29 @@ class AttendeesResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([]);
+            ->schema([
+                Forms\Components\Section::make('')
+                    ->columns(1)
+                    ->extraAttributes(['class' => 'max-w-lg'])
+                    ->compact()
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label("Nombre")
+                            ->disabled(),
+                        Forms\Components\TextInput::make('who_invited_me')
+                            ->label("Invitado por")
+                            ->disabled(),
+                        Forms\Components\TextInput::make('has_gone_to_another_church')
+                            ->label("Ha ido a otra iglesia")
+                            ->disabled(),
+                        Forms\Components\Fieldset::make('Herramientas')
+                            ->schema([
+                                Forms\Components\CheckboxList::make('tools')
+                                    ->relationship('tools', 'id')
+                                    ->options(Tool::all()->pluck('name', 'id')->toArray())
+                            ])
+                    ])
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -43,12 +66,16 @@ class AttendeesResource extends Resource
                     ->label("Nombre"),
                 Columns\TextColumn::make('meetings_count')
                     ->label("Total asistencias")
-                    ->counts('meetings')
+                    ->counts('meetings'),
+                Columns\TextColumn::make('tools_count')
+                    ->label("Total herramientas")
+                    ->counts('tools')
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
             ]);
@@ -69,10 +96,6 @@ class AttendeesResource extends Resource
         ];
     }
     public static function canCreate(): bool
-    {
-        return false;
-    }
-    public static function canEdit(Model $record): bool
     {
         return false;
     }

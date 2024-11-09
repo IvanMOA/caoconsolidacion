@@ -33,16 +33,28 @@ class MeetingsResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label("Nombre"),
-                Forms\Components\TimePicker::make('starts_at')
-                    ->label("Fecha de inicio")
-                    ->default(now()),
-                Forms\Components\CheckboxList::make('attendees')
-                    ->label('Asistencia')
-                    ->relationship('attendees', 'id')
-                    ->options(Attendee::all()->pluck('name', 'id')->toArray())
-                    ->columns(3)
+                Forms\Components\Section::make('')
+                    ->columns(1)
+                    ->extraAttributes(['class' => 'max-w-lg'])
+                    ->compact()
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label("Nombre"),
+                        Forms\Components\TimePicker::make('starts_at')
+                            ->label("Fecha de inicio")
+                            ->default(now()),
+                    ]),
+                      Forms\Components\Section::make('')
+                          ->columns(1)
+                          ->extraAttributes(['class' => 'max-w-lg'])
+                          ->compact()
+                          ->schema([
+                              Forms\Components\CheckboxList::make('attendees')
+                                  ->label('Asistencia')
+                                  ->relationship('attendees', 'id')
+                                  ->options(Attendee::all()->pluck('name', 'id')->toArray())
+                                  ->searchable()
+                          ])
             ]);
     }
 
