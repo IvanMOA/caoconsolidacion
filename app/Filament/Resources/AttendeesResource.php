@@ -20,15 +20,27 @@ class AttendeesResource extends Resource
 
     protected static ?string $modelLabel = 'congredado';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name'),
-                Forms\Components\TextInput::make('who_invited_me'),
-                Forms\Components\Toggle::make('is_recurrent'),
+                Forms\Components\Section::make('')
+                    ->columns(1)
+                    ->extraAttributes(['class' => 'max-w-lg'])
+                    ->compact()
+                    ->schema([
+                        // ...
+                        Forms\Components\TextInput::make('name')
+                            ->label("Nombre"),
+                        Forms\Components\TextInput::make('who_invited_me')
+                            ->label("Invitado por"),
+                        Forms\Components\TextInput::make('has_gone_to_another_church')
+                            ->label("Ha ido a otra iglesia"),
+                        Forms\Components\Toggle::make('is_recurrent')
+                            ->label("Es recurrente"),
+                    ])
             ]);
     }
 
@@ -59,7 +71,6 @@ class AttendeesResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\MeetingsRelationManager::class
         ];
     }
 

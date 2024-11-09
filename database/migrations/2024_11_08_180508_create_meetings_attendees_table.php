@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer("attendee_id")->references('id')->on('attendee');
             $table->integer("meeting_id")->references('id')->on('meetings');
+            $table->timestamps();
         });
     }
 

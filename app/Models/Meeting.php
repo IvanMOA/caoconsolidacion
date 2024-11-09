@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Meeting extends Model
 {
     protected $fillable = ["name", "starts_at"];
-    public function attendees(): HasMany
+    public function attendees(): BelongsToMany
     {
-        return $this->hasMany(AttendeeMeeting::class);
+        return $this->belongsToMany(Attendee::class);
     }
 }

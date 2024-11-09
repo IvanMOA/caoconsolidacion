@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\MeetingsResource\Pages;
 use App\Filament\Resources\MeetingsResource\RelationManagers;
+use App\Models\Attendee;
+use App\Models\AttendeeMeeting;
 use App\Models\Meeting;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -23,7 +25,7 @@ class MeetingsResource extends Resource
 
     protected static ?string $pluralModelLabel = 'reuniones';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
     public static function form(Form $form): Form
     {
@@ -34,14 +36,11 @@ class MeetingsResource extends Resource
                 Forms\Components\TimePicker::make('starts_at')
                     ->label("Fecha de inicio")
                     ->default(now()),
-                Forms\Components\Repeater::make('attendees')
-                    ->relationship()
-                    ->addActionAlignment(Alignment::Start)
-                    ->schema([
-                        Forms\Components\Select::make('attendee_id')
-                            ->relationship('attendee', 'name')
-                            ->required(),
-                    ])
+                Forms\Components\CheckboxList::make('attendees')
+                    ->label('Asistencia')
+                    ->relationship('attendees', 'id')
+                    ->options(Attendee::all()->pluck('name', 'id')->toArray())
+                    ->columns(3)
             ]);
     }
 
@@ -51,6 +50,10 @@ class MeetingsResource extends Resource
             ->columns([
                 Columns\TextColumn::make('name')
                     ->label("Nombre"),
+                Columns\TextColumn::make('starts_at')
+                    ->dateTime()
+                    ->label("Fecha de inicio"),
+                Columns\TextColumn::make('attendees_count')->counts('attendees')
             ])
             ->filters([
                 //

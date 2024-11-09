@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Attendee extends Model
 {
-    protected $fillable = ["name", "who_invited_me", "is_recurrent"];
+    protected $fillable = ["name", "who_invited_me", "is_recurrent", "has_gone_to_another_church"];
 }

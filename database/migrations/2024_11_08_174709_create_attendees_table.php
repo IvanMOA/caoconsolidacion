@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('attendees', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("who_invited_me");
             $table->boolean("is_recurrent");
+            $table->string("who_invited_me");
+            $table->string("has_gone_to_another_church");
             $table->timestamps();
         });
     }
