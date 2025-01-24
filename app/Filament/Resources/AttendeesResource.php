@@ -22,7 +22,7 @@ class AttendeesResource extends Resource
 
     protected static ?string $model = Attendee::class;
 
-    protected static ?string $modelLabel = 'congredado';
+    protected static ?string $modelLabel = 'congregante';
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
@@ -40,14 +40,27 @@ class AttendeesResource extends Resource
                     ->compact()
                     ->schema([
                         Forms\Components\TextInput::make('name')
-                            ->label("Nombre")
-                            ->disabled(),
+                            ->label("Nombre"),
+                        Forms\Components\DatePicker::make('birthday')
+                            ->label("Fecha de nacimiento"),
+                        Forms\Components\TextInput::make('phone')
+                            ->label("Teléfono"),
                         Forms\Components\TextInput::make('who_invited_me')
-                            ->label("Invitado por")
+                            ->label("Invitado por"),
+                        Forms\Components\Radio::make('has_gone_to_another_church')
+                            ->options([
+                             true => 'Sí',
+                            false => 'No',
+                            ]),
+                        Forms\Components\TextInput::make('church_name')
+                            ->label("Nombre de la iglesia"),
+                        Forms\Components\TextInput::make('is_interested_in_bible_study')
+                            ->label("¿Interesado en asistir a un estudio biblico?"),
+                        Forms\Components\TextInput::make('requests')
+                            ->label("Peticiones")
                             ->disabled(),
-                        Forms\Components\TextInput::make('has_gone_to_another_church')
-                            ->label("Ha ido a otra iglesia")
-                            ->disabled(),
+                        Forms\Components\DatePicker::make('date_of_welcome')
+                            ->label("Fecha"),
                         Forms\Components\Fieldset::make('Herramientas')
                             ->schema([
                                 Forms\Components\CheckboxList::make('tools')

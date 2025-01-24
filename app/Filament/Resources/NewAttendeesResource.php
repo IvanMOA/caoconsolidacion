@@ -17,12 +17,13 @@ class NewAttendeesResource extends Resource
 {
 
     protected static ?int $navigationSort = 3;
-    protected static ?string $navigationLabel = 'Nuevos congregados';
+    protected static ?string $navigationLabel = 'Visitante';
 
+    
     protected static ?string $model = Attendee::class;
 
 
-    protected static ?string $modelLabel = 'congredado';
+    protected static ?string $modelLabel = 'congregado';
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
@@ -41,11 +42,28 @@ class NewAttendeesResource extends Resource
                     ->compact()
                     ->schema([
                         Forms\Components\TextInput::make('name')
-                            ->label("Nombre"),
+                            ->label("Nombre")
+                            ->required(),
+                        Forms\Components\DatePicker::make('birthday')
+                            ->label("Fecha de nacimiento"),
+                        Forms\Components\TextInput::make('phone')
+                            ->label("Teléfono"),
                         Forms\Components\TextInput::make('who_invited_me')
-                            ->label("Invitado por"),
-                        Forms\Components\TextInput::make('has_gone_to_another_church')
-                            ->label("Ha ido a otra iglesia"),
+                            ->label("Persona que te invito"),
+                        Forms\Components\Radio::make('has_gone_to_another_church')
+                            ->options([
+                             true => 'Sí',
+                            false => 'No',
+                         ])
+                            ->label("¿Has asistido a otra congregación cristiana?"),
+                        Forms\Components\TextInput::make('church_name')
+                            ->label("Nombre de la iglesia"),
+                        Forms\Components\TextInput::make('is_interested_in_bible_study')
+                            ->label("¿Interesado en asistir a un estudio biblico?"),
+                        Forms\Components\TextInput::make('requests')
+                            ->label("Peticiones"),    
+                        Forms\Components\DatePicker::make('date_of_welcome')
+                            ->label("Fecha"),
                         Forms\Components\Toggle::make('is_recurrent')
                             ->label("Es recurrente"),
                     ])
@@ -64,6 +82,8 @@ class NewAttendeesResource extends Resource
                     ->label("Invitado por"),
                 Columns\TextColumn::make('has_gone_to_another_church')
                     ->label("Ha ido a otra iglesia"),
+            Columns\TextColumn::make('birthday')
+            ->label("Fecha de nacimiento"),
             ])
             ->filters([
                 //
