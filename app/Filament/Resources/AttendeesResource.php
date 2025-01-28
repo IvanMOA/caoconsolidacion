@@ -33,6 +33,7 @@ class AttendeesResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->
             ->schema([
                 Forms\Components\Section::make('')
                     ->columns(1)

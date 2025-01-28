@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->boolean("is_recurrent");
-            $table->date("birthday");
+            $table->string("birth_day")->nullable();
+            $table->string("birth_month")->nullable();
             $table->string("who_invited_me")->nullable();
             $table->string('phone', 15)->nullable();
             $table->boolean("has_gone_to_another_church")->nullable();
