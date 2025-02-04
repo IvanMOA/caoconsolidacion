@@ -7,6 +7,7 @@ use App\Filament\Resources\MeetingsResource\RelationManagers;
 use App\Models\Attendee;
 use App\Models\AttendeeMeeting;
 use App\Models\Meeting;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -38,23 +39,11 @@ class MeetingsResource extends Resource
                     ->extraAttributes(['class' => 'max-w-lg'])
                     ->compact()
                     ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->label("Nombre"),
-                        Forms\Components\TimePicker::make('starts_at')
+                        Forms\Components\DateTimePicker::make('starts_at')
                             ->label("Fecha de inicio")
-                            ->default(now()),
+                            ->default(Carbon::now('America/Monterrey'))
+                            ->timezone('America/Monterrey')
                     ]),
-                      Forms\Components\Section::make('')
-                          ->columns(1)
-                          ->extraAttributes(['class' => 'max-w-lg'])
-                          ->compact()
-                          ->schema([
-                              Forms\Components\CheckboxList::make('attendees')
-                                  ->label('Asistencia')
-                                  ->relationship('attendees', 'id')
-                                  ->options(Attendee::all()->pluck('name', 'id')->toArray())
-                                  ->searchable()
-                          ])
             ]);
     }
 
@@ -62,14 +51,15 @@ class MeetingsResource extends Resource
     {
         return $table
             ->columns([
-                Columns\TextColumn::make('name')
-                    ->label("Nombre"),
                 Columns\TextColumn::make('starts_at')
                     ->dateTime()
                     ->label("Fecha de inicio"),
-                Columns\TextColumn::make('attendees_count')
-                    ->label("Total asistencias")
-                    ->counts('attendees')
+                 Columns\TextColumn::make('attendees_count')
+                     ->badge()
+                     ->label("Total asistentes")
+                     ->counts('attendees')
+                     ->url(fn ($record) => route('filament.admin.resources.meetings.attendees', ['record' => $record->id]))
+                     ->openUrlInNewTab(false),
             ])
             ->filters([
                 //
@@ -97,6 +87,7 @@ class MeetingsResource extends Resource
             'index' => Pages\ListMeetings::route('/'),
             'create' => Pages\CreateMeetings::route('/create'),
             'edit' => Pages\EditMeetings::route('/{record}/edit'),
+            'attendees' => Pages\MeetingsAttendees::route('/{record}/attendees'),
         ];
     }
 }

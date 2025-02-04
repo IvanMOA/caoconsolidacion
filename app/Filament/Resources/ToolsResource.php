@@ -32,7 +32,7 @@ class ToolsResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label("Nombre"),
-                    ])
+                    ]),
             ]);
     }
 
@@ -42,6 +42,12 @@ class ToolsResource extends Resource
             ->columns([
                 Columns\TextColumn::make('name')
                     ->label("Nombre"),
+                Columns\TextColumn::make('attendees_count')
+                    ->badge()
+                    ->label("Total")
+                    ->counts('attendees')
+                    ->url(fn ($record) => route('filament.admin.resources.tools.attendees', ['record' => $record->id]))
+                    ->openUrlInNewTab(false),
             ])
             ->filters([
                 //
@@ -69,6 +75,7 @@ class ToolsResource extends Resource
             'index' => Pages\ListTools::route('/'),
             'create' => Pages\CreateTools::route('/create'),
             'edit' => Pages\EditTools::route('/{record}/edit'),
+            'attendees' => Pages\ToolsAttendees::route('/{record}/attendees'),
         ];
     }
 }

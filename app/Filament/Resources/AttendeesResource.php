@@ -5,7 +5,9 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AttendeesResource\Pages;
 use App\Filament\Resources\AttendeesResource\RelationManagers;
 use App\Models\Attendee;
+use App\Models\Meeting;
 use App\Models\Tool;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -33,7 +35,6 @@ class AttendeesResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->
             ->schema([
                 Forms\Components\Section::make('')
                     ->columns(1)
@@ -62,13 +63,8 @@ class AttendeesResource extends Resource
                             ->disabled(),
                         Forms\Components\DatePicker::make('date_of_welcome')
                             ->label("Fecha"),
-                        Forms\Components\Fieldset::make('Herramientas')
-                            ->schema([
-                                Forms\Components\CheckboxList::make('tools')
-                                    ->relationship('tools', 'id')
-                                    ->options(Tool::all()->pluck('name', 'id')->toArray())
-                            ])
-                    ])
+                    ]),
+
             ]);
     }
 
@@ -79,11 +75,17 @@ class AttendeesResource extends Resource
                 Columns\TextColumn::make('name')
                     ->label("Nombre"),
                 Columns\TextColumn::make('meetings_count')
+                    ->badge()
                     ->label("Total asistencias")
-                    ->counts('meetings'),
+                    ->counts('meetings')
+                    ->url(fn ($record) => route('filament.admin.resources.attendees.meetings', ['record' => $record->id]))
+                    ->openUrlInNewTab(false),
                 Columns\TextColumn::make('tools_count')
+                    ->badge()
                     ->label("Total herramientas")
                     ->counts('tools')
+                    ->url(fn ($record) => route('filament.admin.resources.attendees.tools', ['record' => $record->id]))
+                    ->openUrlInNewTab(false),
             ])
             ->filters([
                 //
@@ -107,6 +109,8 @@ class AttendeesResource extends Resource
             'index' => Pages\ListAttendees::route('/'),
             'create' => Pages\CreateAttendees::route('/create'),
             'edit' => Pages\EditAttendees::route('/{record}/edit'),
+            'meetings' => Pages\AttendeesMeetings::route('/{record}/meetings'),
+            'tools' => Pages\AttendeesTools::route('/{record}/tools'),
         ];
     }
     public static function canCreate(): bool
