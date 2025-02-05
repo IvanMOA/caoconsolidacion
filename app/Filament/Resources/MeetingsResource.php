@@ -61,6 +61,7 @@ class MeetingsResource extends Resource
                      ->url(fn ($record) => route('filament.admin.resources.meetings.attendees', ['record' => $record->id]))
                      ->openUrlInNewTab(false),
             ])
+            ->defaultSort("starts_at", "desc")
             ->filters([
                 //
             ])

@@ -97,7 +97,9 @@ class NewAttendeesResource extends Resource
                             ->label("Fecha")
                             ->default(now()),
                         Forms\Components\Toggle::make('is_recurrent')
-                            ->label("Es recurrente"),
+                            ->label("Es recurrente")
+                            ->default(false)
+                            ->visible(false)
                     ])
             ]);
     }
@@ -112,10 +114,8 @@ class NewAttendeesResource extends Resource
                     ->label("Es recurrente"),
                 Columns\TextColumn::make('who_invited_me')
                     ->label("Invitado por"),
-                Columns\TextColumn::make('has_gone_to_another_church')
-                    ->label("Ha ido a otra iglesia"),
-            Columns\TextColumn::make('birthday')
-            ->label("Fecha de nacimiento"),
+            Columns\TextColumn::make('phone')
+            ->label("Teléfono"),
             ])
             ->filters([
                 //

@@ -18,4 +18,12 @@ class Attendee extends Model
     {
         return $this->belongsToMany(Tool::class);
     }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            $model->is_recurrent = false;
+        });
+    }
 }
