@@ -21,9 +21,8 @@ class Attendee extends Model
     protected static function boot()
     {
         parent::boot();
-
         static::saving(function ($model) {
-            $model->is_recurrent = false;
+            // $model->is_recurrent = false;
         });
     }
 }

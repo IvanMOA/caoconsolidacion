@@ -1,0 +1,19 @@
+services:
+    app:
+        image: ghcr.io/ivanmoa/caoconsolidacion:latest
+        volumes:
+          - /root/database:/var/www/html/database
+        env_file:
+            - /root/deploy/.env
+        environment:
+          - VIRTUAL_HOST=caoconsolidacion.com
+        restart: unless-stopped
+
+    nginx-proxy:
+      restart: always
+      image: jwilder/nginx-proxy
+      ports:
+        - "80:80"
+      volumes:
+        - "/etc/nginx/vhost.d"
+        - "/var/run/docker.sock:/tmp/docker.sock:ro"

@@ -96,10 +96,6 @@ class NewAttendeesResource extends Resource
                         Forms\Components\DatePicker::make('date_of_welcome')
                             ->label("Fecha")
                             ->default(now()),
-                        Forms\Components\Toggle::make('is_recurrent')
-                            ->label("Es recurrente")
-                            ->default(false)
-                            ->visible(false)
                     ])
             ]);
     }
