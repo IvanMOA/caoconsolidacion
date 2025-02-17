@@ -22,7 +22,10 @@ class Attendee extends Model
     {
         parent::boot();
         static::saving(function ($model) {
-            // $model->is_recurrent = false;
+            if (!$model->isDirty('is_recurrent')) {
+                $model->is_recurrent = false;
+            }
         });
     }
+
 }

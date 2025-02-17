@@ -31,7 +31,8 @@ class ToolsResource extends Resource
                     ->compact()
                     ->schema([
                         Forms\Components\TextInput::make('name')
-                            ->label("Nombre"),
+                            ->label("Nombre")
+                            ->required(),
                     ]),
             ]);
     }

@@ -1,19 +1,38 @@
 services:
-    app:
-        image: ghcr.io/ivanmoa/caoconsolidacion:latest
-        volumes:
-          - /root/database:/var/www/html/database
-        env_file:
-            - /root/deploy/.env
-        environment:
-          - VIRTUAL_HOST=caoconsolidacion.com
-        restart: unless-stopped
+  app:
+    image: ghcr.io/ivanmoa/caoconsolidacion:latest
+    volumes:
+      - "/root/database:/var/www/html/database:rw"
+    env_file:
+      - /root/deploy/.env
+    environment:
+      - VIRTUAL_HOST=caoconsolidacion.com
+      - LETSENCRYPT_HOST=caoconsolidacion.com
+    restart: unless-stopped
 
-    nginx-proxy:
-      restart: always
-      image: jwilder/nginx-proxy
-      ports:
-        - "80:80"
-      volumes:
-        - "/etc/nginx/vhost.d"
-        - "/var/run/docker.sock:/tmp/docker.sock:ro"
+  nginx-proxy:
+    restart: always
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/etc/nginx/vhost.d"
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "/root/deploy/certs:/etc/nginx/certs"
+      - "/root/deploy/html:/usr/share/nginx/html"
+
+  nginx-proxy-acme:
+    restart: always
+    image: nginxproxy/acme-companion
+    container_name: nginx-proxy-acme
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/root/deploy/acme:/etc/acme.sh"
+      - "/root/deploy/certs:/etc/nginx/certs"
+      - "/root/deploy/html:/usr/share/nginx/html"
+    environment:
+      - DEFAULT_EMAIL=caoconsolidacion@gmail.com
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+
